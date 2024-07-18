@@ -19,9 +19,9 @@ const Create = () => {
     }
 
     const { data, error } = await superbase
-    .from("smoothies")
-    .insert([{title, method, rating}])
-    .select()
+      .from("smoothies")
+      .insert([{title, method, rating}])
+      .select()
 
     if (error){
       console.log(error);

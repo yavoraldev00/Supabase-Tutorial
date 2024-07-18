@@ -1,16 +1,41 @@
 import { useState, useEffect } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import supabase from "../config/supabaseClient"
 
 const Update = (  ) => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  const handleSubmit = () => {};
-
   const [title, setTitle] = useState("")
   const [method, setMethod] = useState("")
   const [rating, setRating] = useState("")
+  const [formError, setFormError] = useState(null)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if(!title || !method || !rating){
+      setFormError("Fill out all fields")
+    }
+
+    const {data, error} = await supabase
+      .from("smoothies")
+      .update([{ title, method, rating }])
+      .eq("id", id)
+      .select()
+
+     if (error){
+       console.log(error);
+       setFormError("Fill out all fields");
+     }
+
+    if(data){
+      debugger;
+      console.log(data);
+      setFormError(null);
+      navigate("/");
+    }
+  };
 
   useEffect(() => {
     const fetchSmoothie = async () => {
@@ -64,7 +89,7 @@ const Update = (  ) => {
 
         <button>Create Smoothie Recipe</button>
 
-        {/* {formError && <p className="error">{formError}</p>} */}
+        {formError && <p className="error">{formError}</p>}
       </form>
     </div>
   )
