@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import superbase from "../config/supabaseClient"
+import supabase from "../config/supabaseClient"
 
 
 const Create = () => {
@@ -18,7 +18,7 @@ const Create = () => {
       setFormError("Fill out all fields")
     }
 
-    const { data, error } = await superbase
+    const { data, error } = await supabase
       .from("smoothies")
       .insert([{title, method, rating}])
       .select()
